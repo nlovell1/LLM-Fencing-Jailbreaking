@@ -19,8 +19,9 @@ def process_red_team_jsonl(file_path):
         data = json.load(file)
     parsed_data = []
     for entry in data:
-        # Skip entries without the required fields
-        if "transcript" not in entry or "model_type" not in entry:
+        # Skip entries without the required fields or if the condition isn't met
+        if ("transcript" not in entry or 
+            entry.get("min_harmlessness_score_transcript", 1) > 0):
             continue
         mapped_entry = {
             "prompt": entry["transcript"],
